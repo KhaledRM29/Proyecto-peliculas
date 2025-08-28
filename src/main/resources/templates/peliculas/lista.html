@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Gestión de Películas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .filtros {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .filtros a {
+            margin: 0 10px;
+            color: #007bff;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .filtros a:hover {
+            text-decoration: underline;
+        }
+
+        form {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            padding: 8px;
+            width: 250px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 5px;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        .nuevo {
+            display: block;
+            width: fit-content;
+            margin: 0 auto 20px auto;
+            padding: 8px 12px;
+            background: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .nuevo:hover {
+            background: #218838;
+        }
+
+        table {
+            width: 90%;
+            margin: auto;
+            border-collapse: collapse;
+            background: #fff;
+            box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background: #007bff;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background: #f2f2f2;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .btn-danger {
+            color: #dc3545;
+            font-weight: bold;
+        }
+
+        .btn-danger:hover {
+            color: #a71d2a;
+        }
+
+        .btn-success {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .btn-success:hover {
+            color: #1c7430;
+        }
+    </style>
+</head>
+
+<body>
+	<div th:replace="fragments/menu :: menu"></div>
+<h1 th:text="${estado == 'Inactivo' ? 'Películas Inactivas' : 'Películas Activas'}"></h1>
+
+<div class="filtros">
+    <a th:href="@{/peliculas(estado='Activo')}">Ver Activas</a> |
+    <a th:href="@{/peliculas(estado='Inactivo')}">Ver Inactivas</a>
+</div>
+
+<form th:action="@{/peliculas}" method="get">
+    <input type="text" name="filtro" th:value="${filtro}" placeholder="Buscar por título"/>
+    <button type="submit">Buscar</button>
+</form>
+
+<a th:href="@{/peliculas/nuevo}" class="nuevo">+ Nueva Película</a>
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Título</th>
+        <th>Director</th>
+        <th>Año</th>
+        <th>Género</th>
+        <th>Categoría</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+    </tr>
+    <tr th:each="p : ${peliculas}">
+        <td th:text="${p.idpelicula}"></td>
+        <td th:text="${p.titulo}"></td>
+        <td th:text="${p.director}"></td>
+        <td th:text="${p.anio}"></td>
+        <td th:text="${p.genero.nombre}"></td>
+        <td th:text="${p.categoria.nombre}"></td>
+        <td th:text="${p.estado.nombrestado}"></td>
+        <td>
+            <a th:href="@{'/peliculas/editar/' + ${p.idpelicula}}">Editar</a>
+            <span th:if="${estado == 'Activo'}">
+                | <a class="btn-danger" th:href="@{'/peliculas/eliminar/' + ${p.idpelicula}}"
+                     onclick="return confirm('¿Desactivar película?')">Desactivar</a>
+            </span>
+            <span th:if="${estado == 'Inactivo'}">
+                | <a class="btn-success" th:href="@{'/peliculas/activar/' + ${p.idpelicula}}"
+                     onclick="return confirm('¿Reactivar película?')">Reactivar</a>
+            </span>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>
+

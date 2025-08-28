@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Gestión de Usuarios</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .filtros {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .filtros a {
+            margin: 0 10px;
+            color: #007bff;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .filtros a:hover {
+            text-decoration: underline;
+        }
+
+        .filtros .selected {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+
+        table {
+            width: 90%;
+            margin: auto;
+            border-collapse: collapse;
+            background: #fff;
+            box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background: #007bff;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background: #f2f2f2;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .btn {
+            background: #007bff;
+            color: white;
+            padding: 6px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #0056b3;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+        }
+
+        .btn-danger:hover {
+            background: #a71d2a;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="fragments/menu :: menu"></div>
+
+<h1 th:text="${estado == 'inactivos' ? 'Usuarios Inactivos' : 'Usuarios Activos'}"></h1>
+
+<div class="filtros">
+    <a th:href="@{/usuarios(estado='activos')}" 
+       th:classappend="${estado == 'activos'} ? 'selected' : ''">
+       Ver Activos
+    </a>
+    |
+    <a th:href="@{/usuarios(estado='inactivos')}" 
+       th:classappend="${estado == 'inactivos'} ? 'selected' : ''">
+       Ver Inactivos
+    </a>
+<a th:href="@{/usuarios/nuevo}" class="nuevo-usuario">+ Nuevo Usuario</a>
+	
+</div>
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Email</th>
+        <th>Rol</th>
+        <th>Estado</th>
+        <th>Membresía</th>
+        <th>Acciones</th>
+    </tr>
+    <tr th:each="usuario : ${usuarios}">
+        <td th:text="${usuario.idusuario}"></td>
+        <td th:text="${usuario.nombre}"></td>
+        <td th:text="${usuario.apellido}"></td>
+        <td th:text="${usuario.email}"></td>
+        <td th:text="${usuario.rol.nombrerol}"></td>
+        <td th:text="${usuario.estado.nombrestado}"></td>
+		<td th:text="${usuario.membresia != null ? usuario.membresia.tipo : 'N/A'}"></td>
+        <td>
+            <a class="btn" th:href="@{'/usuarios/editar/' + ${usuario.idusuario}}">Editar</a>
+            <span th:if="${estado == 'activos'}">
+                | <a class="btn btn-danger"
+                     th:href="@{'/usuarios/eliminar/' + ${usuario.idusuario}}"
+                     onclick="return confirm('¿Desactivar usuario?')">Desactivar</a>
+            </span>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>
+
+

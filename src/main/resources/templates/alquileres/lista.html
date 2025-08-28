@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Listado de Alquileres</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .filtros {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .filtros a {
+            margin: 0 10px;
+            color: #007bff;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .filtros a:hover {
+            text-decoration: underline;
+        }
+
+        .filtros .selected {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+
+        .nuevo {
+            display: block;
+            width: fit-content;
+            margin: 0 auto 20px auto;
+            padding: 8px 12px;
+            background: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .nuevo:hover {
+            background: #218838;
+        }
+
+        table {
+            width: 95%;
+            margin: auto;
+            border-collapse: collapse;
+            background: #fff;
+            box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background: #007bff;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background: #f2f2f2;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .btn-danger {
+            color: #dc3545;
+            font-weight: bold;
+        }
+
+        .btn-danger:hover {
+            color: #a71d2a;
+        }
+    </style>
+</head>
+<body>
+	<div th:replace="fragments/menu :: menu"></div>
+<h1>Listado de Alquileres</h1>
+
+<!-- Botones para alternar entre activos e inactivos -->
+<div class="filtros">
+    <a th:href="@{/alquileres(estado='activos')}" th:classappend="${estado == 'activos'} ? 'selected'">Ver Activos</a> |
+    <a th:href="@{/alquileres(estado='inactivos')}" th:classappend="${estado == 'inactivos'} ? 'selected'">Ver Inactivos</a>
+</div>
+
+<a th:href="@{/alquileres/nuevo}" class="nuevo">+ Nuevo Alquiler</a>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Usuario</th>
+        <th>Películas</th>
+        <th>Fecha Alquiler</th>
+        <th>Fecha Devolución</th>
+        <th>Estado</th>
+        <th>Tarifa</th>
+        <th>Mora</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="a : ${alquileres}">
+        <td th:text="${a.idalquiler}"></td>
+        <td th:text="${a.usuario.nombre}"></td>
+        <td>
+            <ul>
+				<li th:each="detalle : ${a.detalles}" th:text="|${detalle.pelicula.titulo} - $${detalle.tarifa}|"></li>
+            </ul>
+        </td>
+        <td th:text="${a.fechaalquiler}"></td>
+        <td th:text="${a.fechadevolucion}"></td>
+        <td th:text="${a.estado.nombrestado}"></td>
+        <td th:text="${a.tarifa}"></td>
+        <td th:text="${a.mora}"></td>
+        <td>
+            <a th:href="@{/alquileres/editar/{id}(id=${a.idalquiler})}">Editar</a> |
+            <a class="btn-danger" th:href="@{/alquileres/eliminar/{id}(id=${a.idalquiler})}"
+               onclick="return confirm('¿Seguro de eliminar este alquiler?')">Eliminar</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
+
+
+

@@ -1,0 +1,43 @@
+# Compilación de Maven
+/target/
+/out/
+
+# Wrapper de Maven
+.mvn/wrapper/maven-wrapper.jar
+
+# Archivos generados en src (no ignorar si hay código)
+!**/src/main/**/target/
+!**/src/test/**/target/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# IDEs
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea/
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
+
+# Logs y temporales
+*.log
+*.tmp
+.DS_Store

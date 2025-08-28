@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Compra Confirmada</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f7f7f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .confirm-box {
+            background: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            text-align: center;
+        }
+        h1 {
+            color: #27ae60;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+        a {
+            text-decoration: none;
+            background: #3498db;
+            color: #fff;
+            padding: 12px 25px;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+        a:hover {
+            background: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="confirm-box">
+        <h1>Compra realizada con éxito</h1>
+        <p>Total a pagar: $<span th:text="${total}"></span></p>
+        <a th:href="@{/catalogo}">Volver al catálogo</a>
+    </div>
+</body>
+</html>

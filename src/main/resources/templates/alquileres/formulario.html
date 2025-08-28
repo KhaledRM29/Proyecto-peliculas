@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Formulario Alquiler</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+            width: 400px;
+        }
+
+        label {
+            margin-top: 10px;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        input, select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        input:focus, select:focus {
+            border-color: #007BFF;
+            outline: none;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #007BFF;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <form th:action="@{/alquileres/guardar}" method="post" th:object="${alquiler}">
+        <h1 th:text="${alquiler.idalquiler != null ? 'Editar Alquiler' : 'Nuevo Alquiler'}"></h1>
+
+        <input type="hidden" th:field="*{idalquiler}"/>
+
+		<label>Usuario:</label>
+		<select th:field="*{usuario.idusuario}">
+		    <option th:each="u : ${usuarios}" th:value="${u.idusuario}" th:text="${u.nombre + ' ' + u.apellido}"></option>
+		</select>
+
+
+		<label>Película:</label>
+		<select th:field="*{detalles[0].pelicula.idpelicula}">
+		    <option th:each="p : ${peliculas}" th:value="${p.idpelicula}" th:text="${p.titulo}"></option>
+		</select>
+
+
+        <label>Fecha Alquiler:</label>
+        <input type="date" th:field="*{fechaalquiler}"/>
+
+        <label>Fecha Devolución:</label>
+        <input type="date" th:field="*{fechadevolucion}"/>
+
+		<label>Estado:</label>
+		<select th:field="*{estado.idestado}">
+		    <option th:each="e : ${estados}" th:value="${e.idestado}" th:text="${e.nombrestado}"></option>
+		</select>
+
+		
+        <label>Tarifa:</label>
+        <input type="number" step="0.01" th:field="*{tarifa}"/>
+
+        <label>Mora:</label>
+        <input type="number" step="0.01" th:field="*{mora}"/>
+
+        <button type="submit">Guardar</button>
+        <a th:href="@{/alquileres}">Volver</a>
+    </form>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Formulario Usuario</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+            width: 400px;
+        }
+
+        label {
+            margin-top: 10px;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        input, select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        input:focus, select:focus {
+            border-color: #007BFF;
+            outline: none;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #007BFF;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<form th:action="@{/usuarios/guardar}" method="post" th:object="${usuario}">
+    <h1 th:text="${usuario.idusuario != null ? 'Editar Usuario' : 'Nuevo Usuario'}"></h1>
+
+    <input type="hidden" th:field="*{idusuario}"/>
+
+    <label>Nombre:</label>
+    <input type="text" th:field="*{nombre}" required/>
+
+    <label>Apellido:</label>
+    <input type="text" th:field="*{apellido}" required/>
+
+    <label>Email:</label>
+    <input type="email" th:field="*{email}" required/>
+
+    <label>Teléfono:</label>
+    <input type="text" th:field="*{telefono}"/>
+
+    <label>Dirección:</label>
+    <input type="text" th:field="*{direccion}"/>
+	<label>Contraseña:</label>
+	<input type="password" th:field="*{contrasena}" th:placeholder="${usuario.idusuario != null ? 'Dejar vacío para no cambiar' : ''}"/>
+
+
+    <label>Rol:</label>
+    <select th:field="*{rol.idrol}" required>
+        <option th:each="r : ${roles}"
+                th:value="${r.idrol}" 
+                th:text="${r.nombrerol}"
+                th:selected="${usuario.rol != null and usuario.rol.idrol == r.idrol}">
+        </option>
+    </select>
+
+    <label>Estado:</label>
+    <select th:field="*{estado.idestado}" required>
+        <option th:each="e : ${estados}"
+                th:value="${e.idestado}" 
+                th:text="${e.nombrestado}"
+                th:selected="${usuario.estado != null and usuario.estado.idestado == e.idestado}">
+        </option>
+    </select>
+
+	<label>Membresía:</label>
+	<select th:field="*{membresia.idmembresia}">
+	    <option th:value="${null}">-- Sin Membresía --</option>
+	    <option th:each="m : ${membresias}"
+	            th:value="${m.idmembresia}" 
+	            th:text="${m.tipo}">
+	    </option>
+	</select>
+
+
+    <button type="submit">Guardar</button>
+    <a th:href="@{/usuarios}">Volver</a>
+</form>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Catálogo de Películas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .catalogo {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .card {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            overflow: hidden;
+            text-align: center;
+            background: #fff;
+            box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+            transition: transform .2s;
+        }
+
+        .card:hover {
+            transform: scale(1.02);
+        }
+
+        .card img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+        }
+
+        .card h3 {
+            margin: 10px 0;
+            color: #007bff;
+        }
+
+        .card p {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        .btn {
+            background: #007bff;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background .3s;
+        }
+
+        .btn:hover {
+            background: #0056b3;
+        }
+
+        .carrito-link {
+            display: block;
+            width: fit-content;
+            margin: 20px auto;
+            padding: 10px 15px;
+            background: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .carrito-link:hover {
+            background: #218838;
+        }
+    </style>
+</head>
+<body>
+<header th:replace="~{fragments/menu :: menu}"></header>
+
+<h1>Catálogo de Películas</h1>
+
+<div class="catalogo">
+    <div th:each="pelicula : ${peliculas}" class="card">
+        <img th:src="${pelicula.imagen != null ? '/img/' + pelicula.imagen : '/img/default.jpg'}" alt="Imagen Película">
+        <h3 th:text="${pelicula.titulo}"></h3>
+        <p th:text="${pelicula.director}"></p>
+        <p><strong>Año:</strong> <span th:text="${pelicula.anio}"></span></p>
+
+        <form th:action="@{/catalogo/agregar/{id}(id=${pelicula.idpelicula})}" method="post">
+            <button type="submit" class="btn">Agregar al Carrito</button>
+        </form>
+    </div>
+</div>
+
+<a href="/carrito/ver" class="carrito-link">🛒 Ver Carrito</a>
+</body>
+</html>
+

@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Videoclub</title>
+</head>
+<body>
+    <header th:replace="~{fragments/menu :: menu}"></header>
+
+    <main th:insert="${content}"></main>
+</body>
+</html>

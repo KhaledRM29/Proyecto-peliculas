@@ -1,0 +1,40 @@
+<div th:fragment="menu">
+    <nav>
+        <ul style="list-style:none; display:flex; gap:20px; padding:15px 30px; background:#007BFF; margin:0; align-items:center;">
+
+            <!-- Inicio siempre visible -->
+            <li><a href="/" style="text-decoration:none; color:white; font-weight:bold;">Inicio</a></li>
+
+            <!-- Cliente -->
+            <li th:if="${#authorization.expression('hasAuthority(''ROLE_Cliente'')')}">
+                <a href="/catalogo" style="text-decoration:none; color:white; font-weight:bold;">Catálogo</a>
+            </li>
+
+            <!-- Empleado y Administrador: Alquileres -->
+            <li th:if="${#authorization.expression('hasAuthority(''ROLE_Empleado'') or hasAuthority(''ROLE_Administrador'')')}">
+                <a href="/alquileres" style="text-decoration:none; color:white; font-weight:bold;">Alquileres</a>
+            </li>
+
+            <!-- Empleado y Administrador: Usuarios -->
+            <li th:if="${#authorization.expression('hasAuthority(''ROLE_Empleado'') or hasAuthority(''ROLE_Administrador'')')}">
+                <a href="/usuarios" style="text-decoration:none; color:white; font-weight:bold;">Usuarios</a>
+            </li>
+
+            <!-- Solo Administrador: Películas -->
+            <li th:if="${#authorization.expression('hasAuthority(''ROLE_Administrador'')')}">
+                <a href="/peliculas" style="text-decoration:none; color:white; font-weight:bold;">Películas</a>
+            </li>
+
+            <!-- Cerrar sesión siempre visible -->
+            <li style="margin-left:auto;">
+                <form th:action="@{/logout}" method="post" style="display:inline">
+                    <button type="submit" 
+                        style="background:none; border:none; color:white; cursor:pointer; font-weight:bold; font-size:14px; padding:5px 10px; text-decoration:underline;">
+                        Cerrar sesión
+                    </button>
+                </form>
+            </li>
+
+        </ul>
+    </nav>
+</div>
